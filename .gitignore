@@ -6,3 +6,6 @@ pnpm-lock.yaml
 changeLog.md
 css
 dist
+ffmpeg*
+faces*
+*.exe
