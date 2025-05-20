@@ -154,6 +154,7 @@ function addEventqContextMenu() {
    * 判断按下的是不是右键
    */
   let isRightClick = false;
+  let rightClickEventDom = null;
   /**
    * 监听事件名称
    */
@@ -201,6 +202,7 @@ function addEventqContextMenu() {
       searchImageData = null;
       msgSticker = null;
       isRightClick = true;
+      rightClickEventDom = event.target;
       const messageEl = getParentElement(event.target, "message");
       if (messageEl) {
         const msgRecord = messageEl?.__VUE__?.[0]?.props?.msgRecord;
@@ -291,10 +293,12 @@ function addEventqContextMenu() {
 
     // 在网页搜索
     if (isRightClick && selectText.length && options.qContextMenu.wordSearch.enabled) {
-      const searchText = selectText;
-      addQContextMenu(qContextMenu, searchIcon, "搜索: " + strTruncate(selectText, 4), () => {
-        lite_tools.openWeb(options.qContextMenu.wordSearch.searchUrl.replace("%search%", encodeURIComponent(searchText)));
-      });
+      if (rightClickEventDom && rightClickEventDom.closest('.message-content__wrapper')) {
+        const searchText = selectText
+        addQContextMenu(qContextMenu, searchIcon, "搜索: " + strTruncate(selectText, 4), () => {
+          lite_tools.openWeb(options.qContextMenu.wordSearch.searchUrl.replace("%search%", encodeURIComponent(searchText)))
+        });
+      }
     }
     // 搜索图片
     if (searchImageData && options.qContextMenu.imageSearch.enabled) {
